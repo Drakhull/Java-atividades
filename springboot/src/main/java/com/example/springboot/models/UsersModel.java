@@ -2,8 +2,11 @@ package com.example.springboot.models;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -14,6 +17,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 
 
@@ -36,9 +41,12 @@ public class UsersModel implements Serializable {
 	@Column
 	private String profile;
 	@Column
-	private LocalDate creationDate;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+	private ZonedDateTime creationDate;
+
 	@Column
-    private LocalDate updateDate;
+	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    private ZonedDateTime updateDate;
     @Column
     private LocalDate birthDate;
 	
@@ -49,6 +57,18 @@ public class UsersModel implements Serializable {
 	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "user_id")
     private List<PhoneModel> phoneNumbers;
+	
+	
+	@PrePersist
+    private void prePersistFunction() {
+		this.updateDate = null;
+        this.creationDate = ZonedDateTime.now();
+    }
+	@PreUpdate
+    private void preUpdateFunction() {
+        this.updateDate = ZonedDateTime.now();
+    }
+	
 	
 	public UUID getIdUser() {
 		return idUser;
@@ -93,18 +113,18 @@ public class UsersModel implements Serializable {
 	}
 	
 	
-	public LocalDate getCreationDate() {
+	public ZonedDateTime getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(LocalDate creationDate) {
+	public void setCreationDate(ZonedDateTime creationDate) {
 		this.creationDate = creationDate;
 	}
 	
 	
-	public LocalDate getUpdateDate() {
+	public ZonedDateTime getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(LocalDate updateDate) {
+	public void setUpdateDate(ZonedDateTime updateDate) {
 		this.updateDate = updateDate;
 	}
 	
