@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 
 import com.example.springboot.dtos.UsersRecordDto;
 import com.example.springboot.models.UsersModel;
@@ -37,7 +39,14 @@ public class UsersController {
 	
 	@GetMapping("/users")
 	public ResponseEntity<List<UsersModel>> getAllUsers(){
-		return ResponseEntity.status(HttpStatus.OK).body(usersRepository.findAll());
+		List<UsersModel> usersList = usersRepository.findAll();
+		if(!usersList.isEmpty()) {
+			for(UsersModel user : usersList) {
+				UUID id = user.getIdUser();
+				user.add(linkTo(methodOn(UsersController.class).getOneUser(id)).withSelfRel());
+			}
+		}
+		return ResponseEntity.status(HttpStatus.OK).body(usersList);
 	}
 	
 	@GetMapping("/users/{id}")
@@ -46,6 +55,7 @@ public class UsersController {
 		if(user0.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Usuário não encontrado.");
 		}
+		user0.get().add(linkTo(methodOn(UsersController.class).getAllUsers()).withRel("Users List"));
 		return ResponseEntity.status(HttpStatus.OK).body(user0.get());
 	}
 	

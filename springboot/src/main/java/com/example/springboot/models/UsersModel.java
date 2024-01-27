@@ -6,6 +6,8 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.CascadeType;
@@ -25,7 +27,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "TB_USERS")
-public class UsersModel implements Serializable {
+public class UsersModel extends RepresentationModel<UsersModel>implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
