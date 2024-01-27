@@ -1,6 +1,6 @@
 package com.example.springboot.dtos;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import org.hibernate.validator.constraints.br.CPF;
@@ -20,8 +20,8 @@ public record UsersRecordDto(@NotBlank 			String name,
 							 @NotBlank	@Email 	String email, 
 							 @NotBlank 			String password, 	
 							 @NotBlank	@CPF 	String cpf, 
-							 LocalDateTime creationDate, 
-							 LocalDateTime updateDate, 
+							 ZonedDateTime creationDate, 
+							 ZonedDateTime updateDate, 
 							 @NotNull	@DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate birthDate,
 							 @NotBlank 			String profile,		
 							 @Valid @NotNull 	AddressModel address,

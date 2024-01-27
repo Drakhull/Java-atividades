@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -54,7 +55,7 @@ public class UsersModel implements Serializable {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
 	private AddressModel address;
 	
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private List<PhoneModel> phoneNumbers;
 	
@@ -72,9 +73,6 @@ public class UsersModel implements Serializable {
 	
 	public UUID getIdUser() {
 		return idUser;
-	}
-	public void setIdUser(UUID idUser) {
-		this.idUser = idUser;
 	}
 	
 	
@@ -98,7 +96,7 @@ public class UsersModel implements Serializable {
 		return password;
 	}
 	public void setPassword(String password) {
-	//  int strength = 12;
+	//  integer strength = 12;
 	//  BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(strength);
 	//  this.password = passwordEncoder.encode(password);
 		this.password = password;
@@ -116,17 +114,17 @@ public class UsersModel implements Serializable {
 	public ZonedDateTime getCreationDate() {
 		return creationDate;
 	}
-	public void setCreationDate(ZonedDateTime creationDate) {
-		this.creationDate = creationDate;
-	}
+//	public void setCreationDate(ZonedDateTime creationDate) {
+//		this.creationDate = creationDate;
+//	}
 	
 	
 	public ZonedDateTime getUpdateDate() {
 		return updateDate;
 	}
-	public void setUpdateDate(ZonedDateTime updateDate) {
-		this.updateDate = updateDate;
-	}
+//	public void setUpdateDate(ZonedDateTime updateDate) {
+//		this.updateDate = updateDate;
+//	}
 	
 	
 	public LocalDate getBirthDate() {
@@ -156,7 +154,6 @@ public class UsersModel implements Serializable {
     public List<PhoneModel> getPhoneNumbers() {
         return phoneNumbers;
     }
-
     public void setPhoneNumbers(List<PhoneModel> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
     }
